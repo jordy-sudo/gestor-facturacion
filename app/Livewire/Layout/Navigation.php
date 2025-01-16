@@ -3,57 +3,52 @@
 namespace App\Livewire\Layout;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+
+use App\Livewire\Actions\Logout;
+use App\Models\MenuItems;
 
 class Navigation extends Component
 {
-    public $menu = [
-        [
-            'label' => 'Dashboard',
-            'icon' => 'heroicon-o-home',
-            'route' => 'dashboard',
-            'active' => false,
-        ],
-        [
-            'label' => 'Profile',
-            'icon' => 'heroicon-o-user',
-            'route' => 'profile',
-            'active' => false,
-        ],
-        [
-            'label' => 'Settings',
-            'icon' => 'heroicon-o-cog',
-            'route' => null,
-            'active' => false,
-            'submenu' => [
-                [
-                    'label' => 'Account',
-                    'route' => 'settings.account',
-                    'active' => false,
-                ],
-                [
-                    'label' => 'Privacy',
-                    'route' => 'settings.privacy',
-                    'active' => false,
-                ],
-            ],
-        ],
-    ];
+    public $menuItems;
 
-    public function setActiveMenu($route)
+    public function getMenu()
     {
-        foreach ($this->menu as &$item) {
-            $item['active'] = $item['route'] === $route;
+        $user = Auth::user();
 
-            if (isset($item['submenu'])) {
-                foreach ($item['submenu'] as &$subItem) {
-                    $subItem['active'] = $subItem['route'] === $route;
-                }
-            }
-        }
+        $menuItems = MenuItems::with('children')
+            ->whereNull('parent_id')
+            ->get()
+            ->filter(function ($item) use ($user) {
+                return !$item->permission_name || $user->can($item->permission_name);
+            })
+            ->map(function ($item) use ($user) {
+                $item->children = $item->children->filter(function ($child) use ($user) {
+                    return !$child->permission_name || $user->can($child->permission_name);
+                });
+                return $item;
+            });
+
+        return $menuItems;
+    }
+
+    public function mount()
+    {
+        $this->menuItems = $this->getMenu();
+    }
+
+    public function logout()
+    {
+        (new Logout())();
+
+        return redirect('/login');
     }
 
     public function render()
-    {
-        return view('livewire.layout.navigation');
+    {   
+        // dd($this->menuItems);
+        return view('livewire.layout.navigation', [
+            'menuItems' => $this->menuItems,
+        ]);
     }
 }

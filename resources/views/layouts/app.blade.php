@@ -27,10 +27,11 @@
                 </header>
             @endif
             <!-- Message Session-->
-            <livewire:session-warning />
-
+            {{-- <livewire:session-warning /> --}}    
             <!-- Page Content -->
             <main>
+                {{-- Spinner --}}
+                    <livewire:components.loading />
                     {{ $slot }}
             </main>
         </div>
