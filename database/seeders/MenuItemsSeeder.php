@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\MenuItems;
 
@@ -17,109 +16,118 @@ class MenuItemsSeeder extends Seeder
             'title' => 'Dashboard',
             'route' => 'dashboard',
             'icon' => 'heroicon-o-home',
-            'permission_name' => 'dashboard.list', 
+            'permission_name' => 'dashboard.view',
             'order' => 1,
         ]);
 
-        //Menu todo relacionado a Ventas
+        // Menú de Ventas
         $ventas = MenuItems::create([
             'title' => 'Ventas',
             'route' => 'ventas.list',
             'icon' => 'heroicon-o-check-circle',
-            'permission_name' => 'ventas-list',
+            'permission_name' => 'ventas.view',
             'order' => 2,
         ]);
 
-        //Submenu de ventas
-        $ventasNueva = MenuItems::create([
+        // Submenús de Ventas
+        MenuItems::create([
             'title' => 'Nueva Venta',
             'route' => 'ventas.create',
-            'icon' => 'heroicon-o-users',
-            'permission_name' => 'ventas-create',
-            'parent_id' => $ventas->id, 
+            'icon' => 'heroicon-o-shopping-cart',
+            'permission_name' => 'ventas.create',
+            'parent_id' => $ventas->id,
             'order' => 1,
         ]);
 
-        $ventasReporte = MenuItems::create([
+        MenuItems::create([
             'title' => 'Reportes',
             'route' => 'ventas.report',
-            'icon' => 'heroicon-o-users',
-            'permission_name' => 'ventas-report', 
-            'parent_id' => $ventas->id, 
+            'icon' => 'heroicon-o-document-text',
+            'permission_name' => 'ventas.generate-report',
+            'parent_id' => $ventas->id,
             'order' => 2,
         ]);
 
-        $ventasAnulacion = MenuItems::create([
-            'title' => 'Anulacion',
+        MenuItems::create([
+            'title' => 'Anulación',
             'route' => 'ventas.override',
-            'icon' => 'heroicon-o-users',
-            'permission_name' => 'ventas-override', 
-            'parent_id' => $ventas->id, 
+            'icon' => 'heroicon-o-x-circle',
+            'permission_name' => 'ventas.override',
+            'parent_id' => $ventas->id,
             'order' => 3,
         ]);
 
-        $ventasBorrar = MenuItems::create([
+        MenuItems::create([
             'title' => 'Borrar',
             'route' => 'ventas.delete',
-            'icon' => 'heroicon-o-users',
-            'permission_name' => 'ventas-delete', 
-            'parent_id' => $ventas->id, 
+            'icon' => 'heroicon-o-trash',
+            'permission_name' => 'ventas.delete',
+            'parent_id' => $ventas->id,
             'order' => 4,
         ]);
 
-        $ventasEnlaces = MenuItems::create([
+        MenuItems::create([
             'title' => 'Enlaces',
             'route' => 'ventas.enlaces',
-            'icon' => 'heroicon-o-users',
-            'permission_name' => 'ventas-enlaces', 
-            'parent_id' => $ventas->id, 
+            'icon' => 'heroicon-o-link',
+            'permission_name' => 'ventas.manage-links',
+            'parent_id' => $ventas->id,
             'order' => 5,
         ]);
 
-        $ventasNuevoCliente = MenuItems::create([
+        MenuItems::create([
             'title' => 'Nuevo Cliente',
             'route' => 'ventas.create.client',
-            'icon' => 'heroicon-o-users',
-            'permission_name' => 'ventas-create-client', 
-            'parent_id' => $ventas->id, 
+            'icon' => 'heroicon-o-user-plus',
+            'permission_name' => 'ventas.create-client',
+            'parent_id' => $ventas->id,
             'order' => 6,
         ]);
 
-        $ventasNuevoProducto = MenuItems::create([
+        MenuItems::create([
             'title' => 'Nuevo Producto',
             'route' => 'ventas.create.product',
-            'icon' => 'heroicon-o-users',
-            'permission_name' => 'ventas-create-product', 
-            'parent_id' => $ventas->id, 
+            'icon' => 'heroicon-o-archive-box',
+            'permission_name' => 'ventas.create-product',
+            'parent_id' => $ventas->id,
             'order' => 7,
         ]);
 
-        $ventasCierreCaja = MenuItems::create([
-            'title' => 'Cieere Caja',
-            'route' => 'ventas.close.caj',
-            'icon' => 'heroicon-o-users',
-            'permission_name' => 'ventas-close-caj', 
-            'parent_id' => $ventas->id, 
+        MenuItems::create([
+            'title' => 'Cierre de Caja',
+            'route' => 'ventas.close.cash',
+            'icon' => 'heroicon-c-currency-euro',
+            'permission_name' => 'ventas.close-cash-register',
+            'parent_id' => $ventas->id,
             'order' => 8,
         ]);
 
-        //Menu todo relacionado a Administracion
+        // Menú de Administración
         $admin = MenuItems::create([
-            'title' => 'Administracion',
+            'title' => 'Administración',
             'route' => 'admin.list',
-            'icon' => 'heroicon-o-check-circle',
-            'permission_name' => 'admin-list',
+            'icon' => 'heroicon-o-cog',
+            'permission_name' => 'admin.view',
+            'order' => 3,
+        ]);
+
+        // Submenús de Administración
+        MenuItems::create([
+            'title' => 'Gestión de Roles',
+            'route' => 'admin.roles',
+            'icon' => 'heroicon-o-shield-check',
+            'permission_name' => 'admin.manage-roles',
+            'parent_id' => $admin->id,
             'order' => 1,
         ]);
 
-        //Submenu de adminsitracion
-        // $ventasNueva = MenuItems::create([
-        //     'title' => 'Nueva Venta',
-        //     'route' => 'ventas.create',
-        //     'icon' => 'heroicon-o-users',
-        //     'permission_name' => 'ventas-create',
-        //     'parent_id' => $ventas->id, 
-        //     'order' => 1,
-        // ]);
+        MenuItems::create([
+            'title' => 'Gestión de Usuarios',
+            'route' => 'admin.users',
+            'icon' => 'heroicon-o-user-group',
+            'permission_name' => 'admin.manage-users',
+            'parent_id' => $admin->id,
+            'order' => 2,
+        ]);
     }
 }
